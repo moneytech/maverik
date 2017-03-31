@@ -1,0 +1,8 @@
+
+src/main.asm,20
+_start:_start5,34
+
+Makefile,112
+ASM := armv7a-hardfloat-linux-gnueabi-asASM1,0
+LD  := armv7a-hardfloat-linux-gnueabi-ldLD2,41
+all:all5,84
