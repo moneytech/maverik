@@ -68,13 +68,13 @@ void init_uart()
 
 void uart_putc(const unsigned char c)
 {
-	while(mmio_read(UART0_FR) & (1 << 5)) {}
+	while(mmio_read(UART0_FR) & (1 << 5));
 	mmio_write(UART0_DR, c);
 }
 
 unsigned char uart_getc()
 {
-	while(mmio_read(UART0_FR) & (1 << 4)) {}
+	while(mmio_read(UART0_FR) & (1 << 4));
 	return mmio_read(UART0_DR);
 }
 

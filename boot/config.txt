@@ -1,0 +1,3 @@
+# CONFIG
+
+gpu_mem=64
