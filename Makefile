@@ -1,7 +1,7 @@
-ASM     := armv7a-hardfloat-linux-gnueabi-as
-LD      := armv7a-hardfloat-linux-gnueabi-ld
-OBJDUMP := armv7a-hardfloat-linux-gnueabi-objdump
-OBJCPY  := armv7a-hardfloat-linux-gnueabi-objcopy
+ASM     := arm-none-eabi-as
+CC      := arm-none-eabi-gcc
+OBJDUMP := arm-none-eabi-objdump
+OBJCPY  := arm-none-eabi-objcopy
 
 SRCDIR  := src/
 BLDDIR  := _build/
@@ -11,23 +11,28 @@ LIST    := kernel.list
 MAP     := kernel.map
 LINKER  := kernel.ld
 
-OBJ     := $(patsubst $(SRCDIR)%.asm,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.asm))
+OBJ     := $(patsubst $(SRCDIR)%.c,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.c))
+ASMSRC  := boot.o
 
 all: $(BLDDIR) $(TARGET) $(LIST)
 
-$(LIST) : $(BLDDIR)output.elf 
-	@$(OBJDUMP) -d $(BLDDIR)output.elf > $(LIST)
+$(LIST) : $(BLDDIR)maverik.elf 
+	@$(OBJDUMP) -d $(BLDDIR)maverik.elf > $(LIST)
 
-$(TARGET) : $(BLDDIR)output.elf
-	@$(OBJCPY) $(BLDDIR)output.elf -O binary $(TARGET)
+$(TARGET) : $(BLDDIR)maverik.elf
+	@$(OBJCPY) $(BLDDIR)maverik.elf -O binary $(TARGET)
 
-$(BLDDIR)output.elf : $(OBJ) $(LINKER)
+$(BLDDIR)maverik.elf : $(OBJ) $(LINKER)
 	@echo "Linking..."
-	@$(LD) --no-undefined $(OBJ) -Map $(MAP) -o $(BLDDIR)output.elf -T $(LINKER)
+	@$(CC) -T $(LINKER) -o $(BLDDIR)maverik.elf -ffreestanding -O2 -nostdlib $(OBJ)
 
-$(BLDDIR)%.o: $(SRCDIR)%.asm $(BUILD)
-	@echo "Compiling..."
-	@$(ASM) -I $(SRCDIR) $< -o $@
+$(BLDDIR)%.o: $(SRCDIR)%.c ASM
+	@echo "Compiling C..."
+	@$(CC) -mcpu=arm1176jzf-s -fpic -ffreestanding -std=gnu99 -O2 -Wall -Wextra -c $< -o $@
+
+ASM: $(BLDDIR)
+	@echo "Compiling asm..."
+	@$(ASM) -I $(SRCDIR) $(SRCDIR)*.asm -o $(BLDDIR)$(ASMSRC)
 
 $(BLDDIR):
 	@mkdir $@

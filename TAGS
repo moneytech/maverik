@@ -3,28 +3,28 @@ src/boot.asm,40
 _start:_start13,100
 halt:halt38,449
 
-src/main.asm,100
-sleep:sleep14,110
-sleeploop:sleeploop17,137
-kernel_main:kernel_main23,251
-halt$:halt$34,375
+src/kernel.c,76
+void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)kernel_main4,41
 
-Makefile,831
-ASM     := armv7a-hardfloat-linux-gnueabi-asASM1,0
-LD      := armv7a-hardfloat-linux-gnueabi-ldLD2,45
-OBJDUMP := armv7a-hardfloat-linux-gnueabi-objdumpOBJDUMP3,90
-OBJCPY  := armv7a-hardfloat-linux-gnueabi-objcopyOBJCPY4,140
-SRCDIR  := src/SRCDIR6,191
-BLDDIR  := _build/BLDDIR7,207
-TARGET  := kernel.imgTARGET9,227
-LIST    := kernel.listLIST10,249
-MAP     := kernel.mapMAP11,272
-LINKER  := kernel.ldLINKER12,294
-OBJ     := $(patsubst $(SRCDIR)%.asm,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.asm))OBJ14,316
-all: $(BLDDIR) $(TARGET) $(LIST)all16,395
-$(LIST) : $(BLDDIR)output.elf $(LIST)18,429
-$(TARGET) : $(BLDDIR)output.elf$(TARGET)21,507
-$(BLDDIR)output.elf : $(OBJ) $(LINKER)$(BLDDIR)output.elf24,592
-$(BLDDIR)%.o: $(SRCDIR)%.asm $(BUILD)$(BLDDIR)%.o28,730
-$(BLDDIR):$(BLDDIR)32,822
-clean:clean37,860
+Makefile,851
+ASM     := arm-none-eabi-asASM1,0
+CC      := arm-none-eabi-gccCC2,28
+LD      := arm-none-eabi-ldLD3,57
+OBJDUMP := arm-none-eabi-objdumpOBJDUMP4,85
+OBJCPY  := arm-none-eabi-objcopyOBJCPY5,118
+SRCDIR  := src/SRCDIR7,152
+BLDDIR  := _build/BLDDIR8,168
+TARGET  := kernel.imgTARGET10,188
+LIST    := kernel.listLIST11,210
+MAP     := kernel.mapMAP12,233
+LINKER  := kernel.ldLINKER13,255
+OBJ     := $(patsubst $(SRCDIR)%.c,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.c))OBJ15,277
+ASMSRC  := boot.oASMSRC16,351
+all: $(BLDDIR) $(TARGET) $(LIST)all18,370
+$(LIST) : $(BLDDIR)maverik.elf $(LIST)20,404
+$(TARGET) : $(BLDDIR)output.elf$(TARGET)23,484
+$(BLDDIR)maverik.elf : $(OBJ) $(LINKER)$(BLDDIR)maverik.elf26,570
+$(BLDDIR)%.o: $(SRCDIR)%.c ASM$(BLDDIR)%.o30,710
+ASM: $(BLDDIR)ASM34,855
+$(BLDDIR):$(BLDDIR)38,956
+clean:clean43,994
