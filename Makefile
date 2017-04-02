@@ -23,15 +23,15 @@ $(TARGET) : $(BLDDIR)maverik.elf
 	@$(OBJCPY) $(BLDDIR)maverik.elf -O binary $(TARGET)
 
 $(BLDDIR)maverik.elf : $(OBJ) $(LINKER)
-	@echo "Linking..."
+	@echo "Linking ..."
 	@$(CC) -T $(LINKER) -o $(BLDDIR)maverik.elf -ffreestanding -O2 -nostdlib $(OBJ)
 
 $(BLDDIR)%.o: $(SRCDIR)%.c ASM
-	@echo "Compiling C..."
+	@echo "Compiling" $< "..." 
 	@$(CC) -mcpu=arm1176jzf-s -fpic -ffreestanding -std=gnu99 -O2 -Wall -Wextra -c $< -o $@
 
 ASM: $(BLDDIR)
-	@echo "Compiling asm..."
+	@echo "Compiling asm ..."
 	@$(ASM) -I $(SRCDIR) $(SRCDIR)*.asm -o $(BLDDIR)$(ASMSRC)
 
 $(BLDDIR):
@@ -40,7 +40,7 @@ $(BLDDIR):
 .PHONY: clean
 
 clean:
-	@echo "Cleaning..."
+	@echo "Cleaning ..."
 	@rm -rf $(BLDDIR)
 	@rm -f $(TARGET)
 	@rm -f $(LIST)

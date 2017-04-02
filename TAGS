@@ -3,28 +3,62 @@ src/boot.asm,40
 _start:_start13,100
 halt:halt38,449
 
-src/kernel.c,76
-void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)kernel_main4,41
+src/uart.c,379
+static inline void mmio_write(uint32_t reg, uint32_t data)mmio_write6,60
+static inline uint32_t mmio_read(uint32_t reg)mmio_read11,159
+static inline void sleep(uint32_t count)sleep16,245
+void init_uart()init_uart22,412
+void uart_putc(const unsigned char c)uart_putc45,2199
+unsigned char uart_getc()uart_getc51,2308
+void uart_print(const char *str)uart_print57,2408
 
-Makefile,851
+src/kernel.c,76
+void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)kernel_main6,60
+
+src/uart.h,1406
+#define _UART_H_UART_H2,16
+enum {__anon7d452f6e01034,33
+	GPIO_BASE = 0x3F200000,           // GPIO base addressGPIO_BASE5,40
+	GPPUD = (GPIO_BASE + 0x94),       // Pull GPIO pins up and downGPPUD6,96
+	GPPUDCLK0 = (GPIO_BASE + 0x98),   // Pull special GPIO pins up and downGPPUDCLK07,161
+	UART0_BASE = 0x3F201000,          // UART base addressUART0_BASE8,234
+    UART0_DR     = (UART0_BASE + 0x00),UART0_DR10,310
+    UART0_RSRECR = (UART0_BASE + 0x04),UART0_RSRECR11,350
+    UART0_FR     = (UART0_BASE + 0x18),UART0_FR12,390
+    UART0_ILPR   = (UART0_BASE + 0x20),UART0_ILPR13,430
+    UART0_IBRD   = (UART0_BASE + 0x24),UART0_IBRD14,470
+    UART0_FBRD   = (UART0_BASE + 0x28),UART0_FBRD15,510
+    UART0_LCRH   = (UART0_BASE + 0x2C),UART0_LCRH16,550
+    UART0_CR     = (UART0_BASE + 0x30),UART0_CR17,590
+    UART0_IFLS   = (UART0_BASE + 0x34),UART0_IFLS18,630
+    UART0_IMSC   = (UART0_BASE + 0x38),UART0_IMSC19,670
+    UART0_RIS    = (UART0_BASE + 0x3C),UART0_RIS20,710
+    UART0_MIS    = (UART0_BASE + 0x40),UART0_MIS21,750
+    UART0_ICR    = (UART0_BASE + 0x44),UART0_ICR22,790
+    UART0_DMACR  = (UART0_BASE + 0x48),UART0_DMACR23,830
+    UART0_ITCR   = (UART0_BASE + 0x80),UART0_ITCR24,870
+    UART0_ITIP   = (UART0_BASE + 0x84),UART0_ITIP25,910
+    UART0_ITOP   = (UART0_BASE + 0x88),UART0_ITOP26,950
+    UART0_TDR    = (UART0_BASE + 0x8C),UART0_TDR27,990
+
+Makefile,814
 ASM     := arm-none-eabi-asASM1,0
 CC      := arm-none-eabi-gccCC2,28
-LD      := arm-none-eabi-ldLD3,57
-OBJDUMP := arm-none-eabi-objdumpOBJDUMP4,85
-OBJCPY  := arm-none-eabi-objcopyOBJCPY5,118
-SRCDIR  := src/SRCDIR7,152
-BLDDIR  := _build/BLDDIR8,168
-TARGET  := kernel.imgTARGET10,188
-LIST    := kernel.listLIST11,210
-MAP     := kernel.mapMAP12,233
-LINKER  := kernel.ldLINKER13,255
-OBJ     := $(patsubst $(SRCDIR)%.c,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.c))OBJ15,277
-ASMSRC  := boot.oASMSRC16,351
-all: $(BLDDIR) $(TARGET) $(LIST)all18,370
-$(LIST) : $(BLDDIR)maverik.elf $(LIST)20,404
-$(TARGET) : $(BLDDIR)output.elf$(TARGET)23,484
-$(BLDDIR)maverik.elf : $(OBJ) $(LINKER)$(BLDDIR)maverik.elf26,570
-$(BLDDIR)%.o: $(SRCDIR)%.c ASM$(BLDDIR)%.o30,710
-ASM: $(BLDDIR)ASM34,855
-$(BLDDIR):$(BLDDIR)38,956
-clean:clean43,994
+OBJDUMP := arm-none-eabi-objdumpOBJDUMP3,57
+OBJCPY  := arm-none-eabi-objcopyOBJCPY4,90
+SRCDIR  := src/SRCDIR6,124
+BLDDIR  := _build/BLDDIR7,140
+TARGET  := kernel.imgTARGET9,160
+LIST    := kernel.listLIST10,182
+MAP     := kernel.mapMAP11,205
+LINKER  := kernel.ldLINKER12,227
+OBJ     := $(patsubst $(SRCDIR)%.c,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.c))OBJ14,249
+ASMSRC  := boot.oASMSRC15,323
+all: $(BLDDIR) $(TARGET) $(LIST)all17,342
+$(LIST) : $(BLDDIR)maverik.elf $(LIST)19,376
+$(TARGET) : $(BLDDIR)maverik.elf$(TARGET)22,456
+$(BLDDIR)maverik.elf : $(OBJ) $(LINKER)$(BLDDIR)maverik.elf25,543
+$(BLDDIR)%.o: $(SRCDIR)%.c ASM$(BLDDIR)%.o29,686
+ASM: $(BLDDIR)ASM33,836
+$(BLDDIR):$(BLDDIR)37,938
+clean:clean42,976
