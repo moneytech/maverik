@@ -24,7 +24,7 @@ $(TARGET) : $(BLDDIR)maverik.elf
 
 $(BLDDIR)maverik.elf : $(OBJ) $(LINKER)
 	@echo "Linking ..."
-	@$(CC) -T $(LINKER) -o $(BLDDIR)maverik.elf -ffreestanding -O2 -nostdlib $(OBJ)
+	@$(CC) -T $(LINKER) -o $(BLDDIR)maverik.elf -ffreestanding -O2 -nostdlib $(OBJ) $(BLDDIR)$(ASMSRC)
 
 $(BLDDIR)%.o: $(SRCDIR)%.c ASM
 	@echo "Compiling" $< "..." 
