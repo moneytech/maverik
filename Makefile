@@ -7,17 +7,12 @@ SRCDIR  := src/
 BLDDIR  := _build/
 
 TARGET  := kernel.img
-LIST    := kernel.list
-MAP     := kernel.map
 LINKER  := kernel.ld
 
 OBJ     := $(patsubst $(SRCDIR)%.c,$(BLDDIR)%.o,$(wildcard $(SRCDIR)*.c))
 ASMSRC  := boot.o
 
-all: $(BLDDIR) $(TARGET) $(LIST)
-
-$(LIST) : $(BLDDIR)maverik.elf 
-	@$(OBJDUMP) -d $(BLDDIR)maverik.elf > $(LIST)
+all: $(BLDDIR) $(TARGET)
 
 $(TARGET) : $(BLDDIR)maverik.elf
 	@$(OBJCPY) $(BLDDIR)maverik.elf -O binary $(TARGET)
@@ -43,5 +38,3 @@ clean:
 	@echo "Cleaning ..."
 	@rm -rf $(BLDDIR)
 	@rm -f $(TARGET)
-	@rm -f $(LIST)
-	@rm -f $(MAP)
