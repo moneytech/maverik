@@ -10,3 +10,9 @@ In my case I build a arm-none-eabi toolchain.
 If you build any other toolchain, you need to change the Makefile.
 
     make
+
+#### qemu
+
+Maybe qemu needs 0x10000 instead of 0x8000 in the linker script.
+
+    qemu-system-arm -m 256 -M raspi2 -serial stdio -kernel kernel.img

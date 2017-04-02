@@ -1,7 +1,7 @@
 ENTRY (_start)
 
 SECTIONS {
-	/* bootloader at 0x8000 */
+	/* bootloader at 0x8000 (for qemu -m raspi2 maybe 0x10000...) */
 	. = 0x8000;
 	
 	__start = .;
