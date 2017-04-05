@@ -1,6 +1,6 @@
-# maverik OS
+# EOS
 
-maverik OS is a very simple OS for the Raspberry PI 2
+EOS is a very simple OS for the Raspberry PI 2
 
 #### How to compile
 

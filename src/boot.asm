@@ -21,6 +21,12 @@ _start:
 	mov r7,#0
 	mov r8,#0
 
+	ldr r0, =(0xf << 20) // Enable VFP
+	mcr p15, 0, r0, c1, c0, 2
+	mov r3, #0x40000000
+	//vmsr FPEXC, r3 //Maybe the better choice as the workaround... but seems to be buggy with binutils
+	.long 0xeee83a10
+	
 	b 2f
 
 1:
